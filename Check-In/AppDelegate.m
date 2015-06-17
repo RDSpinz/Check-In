@@ -10,8 +10,8 @@
 #import "HomeViewController.h"
 
 @interface AppDelegate ()
-@property (nonatomic,strong) UINavigationController* navController;
-@property (nonatomic,strong) HomeViewController* homeController;
+@property (strong, nonatomic) UINavigationController* navController;
+@property (strong, nonatomic) HomeViewController* homeController;
 
 @end
 
@@ -39,47 +39,4 @@
     return YES;
 }
 
-/*
- -(void)handleEventForRegion:(CLCircularRegion*)region {
- // Show an alert if application is active
- if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive) {
- if let message = notefromRegionIdentifier(region.identifier) {
- if let viewController = window?.rootViewController {
- showSimpleAlertWithTitle(nil, message: message, viewController: viewController)
- }
- }
- } else {
- // Otherwise present a local notification
- var notification = UILocalNotification()
- notification.alertBody = notefromRegionIdentifier(region.identifier)
- notification.soundName = "Default";
- UIApplication.sharedApplication().presentLocalNotificationNow(notification)
- }
- }
- 
- func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
- if region is CLCircularRegion {
- handleRegionEvent(region)
- }
- }
- 
- func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
- if region is CLCircularRegion {
- handleRegionEvent(region)
- }
- }
- 
- func notefromRegionIdentifier(identifier: String) -> String? {
- if let savedItems = NSUserDefaults.standardUserDefaults().arrayForKey(kSavedItemsKey) {
- for savedItem in savedItems {
- if let geotification = NSKeyedUnarchiver.unarchiveObjectWithData(savedItem as! NSData) as? Geotification {
- if geotification.identifier == identifier {
- return geotification.note
- }
- }
- }
- }
- return nil
- }
- */
 @end

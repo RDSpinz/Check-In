@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"Monitoring Button Pressed");
+
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     if ([[defaults valueForKey:@"isMonitoring"] isEqualToString:@"YES"]) {
         self.startMonitoringButton.titleLabel.text = @"Stop Monitoring";
@@ -46,8 +46,7 @@
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         [self.locationManager requestAlwaysAuthorization];
     }
-    
-    NSLog(@"Monitoring Button Pressed");
+
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     
     if ([sender.titleLabel.text isEqualToString:@"Start Monitoring"] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways) {
@@ -71,8 +70,7 @@
     }
 }
 
-- (CLCircularRegion*)dictToRegion:(NSDictionary*)dictionary
-{
+- (CLCircularRegion*)dictToRegion:(NSDictionary*)dictionary {
     NSString *identifier = [dictionary valueForKey:@"identifier"];
     CLLocationDegrees latitude = [[dictionary valueForKey:@"latitude"] doubleValue];
     CLLocationDegrees longitude =[[dictionary valueForKey:@"longitude"] doubleValue];
@@ -95,12 +93,7 @@
 
 #pragma mark - CLLocationManagerDelegate
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-    NSLog(@"STATUS DID CHANGE!");
-}
-
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
-    NSLog(@"You are at the office");
     
     NSString *baseURL = @"https://hooks.slack.com";
     NSString *path = @"/services/T026B13VA/B06F2555K/slGomBmY0zafWr3LPptdhWHj";
@@ -116,13 +109,8 @@
     
     [afManager POST:path parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        NSLog(@"JSON: %@", responseObject);
-        //here is place for code executed in success case
-        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Request body %@", [[NSString alloc] initWithData:[task.currentRequest HTTPBody] encoding:NSUTF8StringEncoding]);
 
-        //here is place for code executed in success case
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error while sending POST"
                                                             message:@"Sorry, try again."
                                                            delegate:nil
@@ -136,7 +124,6 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
-    NSLog(@"You have left the office");
     
     NSString *baseURL = @"https://hooks.slack.com";
     NSString *path = @"/services/T026B13VA/B06F2555K/slGomBmY0zafWr3LPptdhWHj";
@@ -146,19 +133,15 @@
     [parameters setObject:@"#whos-here" forKey:@"channel"];
     [parameters setObject:@"ghost" forKey:@"icon_emoji"];
     [parameters setObject:@"Randall" forKey:@"username"];
+    
     AFHTTPSessionManager *afManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
     afManager.requestSerializer = [AFJSONRequestSerializer serializer];
     afManager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     [afManager POST:path parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        NSLog(@"JSON: %@", responseObject);
-        //here is place for code executed in success case
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSLog(@"Request body %@", [[NSString alloc] initWithData:[task.currentRequest HTTPBody] encoding:NSUTF8StringEncoding]);
-        
-        //here is place for code executed in success case
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error while sending POST"
                                                             message:@"Sorry, try again."
                                                            delegate:nil
