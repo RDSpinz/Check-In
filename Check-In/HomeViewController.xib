@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeViewController">
             <connections>
+                <outlet property="nameTextField" destination="Nrz-1V-EQJ" id="2cz-rP-r8O"/>
                 <outlet property="startMonitoringButton" destination="uyu-ZN-X4V" id="kFh-fP-o8X"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -16,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyu-ZN-X4V">
-                    <rect key="frame" x="212" y="271.5" width="176" height="42"/>
+                    <rect key="frame" x="212" y="272" width="176" height="42"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Start Monitoring">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -25,9 +26,17 @@
                         <action selector="startMonitoringPressed:" destination="-1" eventType="touchUpInside" id="Hku-9C-HKN"/>
                     </connections>
                 </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Your Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Nrz-1V-EQJ">
+                    <rect key="frame" x="212" y="376" width="176" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="centerX" secondItem="Nrz-1V-EQJ" secondAttribute="centerX" id="5G8-RA-ple"/>
+                <constraint firstItem="uyu-ZN-X4V" firstAttribute="width" secondItem="Nrz-1V-EQJ" secondAttribute="width" id="5kv-M7-z6d"/>
+                <constraint firstItem="Nrz-1V-EQJ" firstAttribute="top" secondItem="uyu-ZN-X4V" secondAttribute="bottom" constant="62" id="KVj-KV-ziW"/>
                 <constraint firstAttribute="centerY" secondItem="uyu-ZN-X4V" secondAttribute="centerY" constant="7.5" id="SyB-jq-KhA"/>
                 <constraint firstAttribute="centerX" secondItem="uyu-ZN-X4V" secondAttribute="centerX" id="TxA-f1-gnE"/>
             </constraints>

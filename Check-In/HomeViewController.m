@@ -13,6 +13,7 @@
 
 @interface HomeViewController () <CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *startMonitoringButton;
+@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (strong, nonatomic) NSDictionary* regionDictionary;
 @property (strong, nonatomic) CLCircularRegion* intrepidOfficeLocation;
@@ -35,7 +36,6 @@
     
     
     self.locationManager = [[CLLocationManager alloc] init];
-    
     self.locationManager.delegate = self;
     
     self.intrepidOfficeLocation = [self dictToRegion:self.regionDictionary];
@@ -94,45 +94,25 @@
 #pragma mark - CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
-    
-    NSString *baseURL = @"https://hooks.slack.com";
-    NSString *path = @"/services/T026B13VA/B06F2555K/slGomBmY0zafWr3LPptdhWHj";
-    
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@"Randall has arrived" forKey:@"text"];
-    [parameters setObject:@"#whos-here" forKey:@"channel"];
-    [parameters setObject:@"ghost" forKey:@"icon_emoji"];
-    [parameters setObject:@"Randall" forKey:@"username"];
-    AFHTTPSessionManager *afManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
-    afManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    afManager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    [afManager POST:path parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error while sending POST"
-                                                            message:@"Sorry, try again."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-        
-        NSLog(@"Error: %@", [error localizedDescription]);
-    }];
-    
+    NSString* message = [NSString stringWithFormat:@"%@ has arrived",self.nameTextField.text];
+    [self postMessage:message];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
-    
+    NSString* message = [NSString stringWithFormat:@"%@ has left the office",self.nameTextField.text];
+    [self postMessage:message];
+
+}
+
+-(void)postMessage:(NSString*)message {
     NSString *baseURL = @"https://hooks.slack.com";
     NSString *path = @"/services/T026B13VA/B06F2555K/slGomBmY0zafWr3LPptdhWHj";
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:@"Randall has left the building" forKey:@"text"];
+    [parameters setObject:message forKey:@"text"];
     [parameters setObject:@"#whos-here" forKey:@"channel"];
     [parameters setObject:@"ghost" forKey:@"icon_emoji"];
-    [parameters setObject:@"Randall" forKey:@"username"];
+    [parameters setObject:self.nameTextField.text forKey:@"username"];
     
     AFHTTPSessionManager *afManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
     afManager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -151,9 +131,7 @@
         
         NSLog(@"Error: %@", [error localizedDescription]);
     }];
-
 }
-
 
 
 @end
