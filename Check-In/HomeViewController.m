@@ -137,6 +137,38 @@
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     NSLog(@"You have left the office");
+    
+    NSString *baseURL = @"https://hooks.slack.com";
+    NSString *path = @"/services/T026B13VA/B06F2555K/slGomBmY0zafWr3LPptdhWHj";
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:@"Randall has left the building" forKey:@"text"];
+    [parameters setObject:@"#whos-here" forKey:@"channel"];
+    [parameters setObject:@"ghost" forKey:@"icon_emoji"];
+    [parameters setObject:@"Randall" forKey:@"username"];
+    AFHTTPSessionManager *afManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
+    afManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    afManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    [afManager POST:path parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        NSLog(@"JSON: %@", responseObject);
+        //here is place for code executed in success case
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NSLog(@"Request body %@", [[NSString alloc] initWithData:[task.currentRequest HTTPBody] encoding:NSUTF8StringEncoding]);
+        
+        //here is place for code executed in success case
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error while sending POST"
+                                                            message:@"Sorry, try again."
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        
+        NSLog(@"Error: %@", [error localizedDescription]);
+    }];
+
 }
 
 
