@@ -7,8 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "HomeViewController.h"
 
 @interface AppDelegate ()
+@property (nonatomic,strong) UINavigationController* navController;
+@property (nonatomic,strong) HomeViewController* homeController;
 
 @end
 
@@ -16,30 +19,67 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
+    
+    self.homeController = [[HomeViewController alloc] init];
+    self.navController = [[UINavigationController alloc] init];
+    self.window.rootViewController = _navController;
+    [self.window makeKeyAndVisible];
+    
+    [self.navController pushViewController:self.homeController animated:NO];
+    self.navController.delegate = self;
+    
+    self.navController.navigationBar.barTintColor = [UIColor darkGrayColor];
+    self.navController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    self.navController.navigationBar.translucent = NO;
+    
     return YES;
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
+/*
+ -(void)handleEventForRegion:(CLCircularRegion*)region {
+ // Show an alert if application is active
+ if (UIApplication.sharedApplication.applicationState == UIApplicationStateActive) {
+ if let message = notefromRegionIdentifier(region.identifier) {
+ if let viewController = window?.rootViewController {
+ showSimpleAlertWithTitle(nil, message: message, viewController: viewController)
+ }
+ }
+ } else {
+ // Otherwise present a local notification
+ var notification = UILocalNotification()
+ notification.alertBody = notefromRegionIdentifier(region.identifier)
+ notification.soundName = "Default";
+ UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+ }
+ }
+ 
+ func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+ if region is CLCircularRegion {
+ handleRegionEvent(region)
+ }
+ }
+ 
+ func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+ if region is CLCircularRegion {
+ handleRegionEvent(region)
+ }
+ }
+ 
+ func notefromRegionIdentifier(identifier: String) -> String? {
+ if let savedItems = NSUserDefaults.standardUserDefaults().arrayForKey(kSavedItemsKey) {
+ for savedItem in savedItems {
+ if let geotification = NSKeyedUnarchiver.unarchiveObjectWithData(savedItem as! NSData) as? Geotification {
+ if geotification.identifier == identifier {
+ return geotification.note
+ }
+ }
+ }
+ }
+ return nil
+ }
+ */
 @end
