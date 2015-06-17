@@ -107,12 +107,12 @@
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setObject:@"Randall has arrived" forKey:@"text"];
-//    [parameters setObject:@"#whos-here" forKey:@"channel"];
-//    [parameters setObject:@"ghost" forKey:@"icon_emoji"];
-//    [parameters setObject:@"Randall" forKey:@"username"];
+    [parameters setObject:@"#whos-here" forKey:@"channel"];
+    [parameters setObject:@"ghost" forKey:@"icon_emoji"];
+    [parameters setObject:@"Randall" forKey:@"username"];
     AFHTTPSessionManager *afManager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:baseURL]];
     afManager.requestSerializer = [AFJSONRequestSerializer serializer];
-    afManager.responseSerializer = [AFJSONResponseSerializer serializer];
+    afManager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     [afManager POST:path parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
