@@ -13,9 +13,9 @@
 
 @interface HomeViewController () <CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet UIButton *startMonitoringButton;
-@property (nonatomic,strong) CLLocationManager* locationManager;
-@property (nonatomic,strong) NSDictionary* regionDictionary;
-@property (nonatomic,strong) CLCircularRegion* intrepidOfficeLocation;
+@property (strong, nonatomic) CLLocationManager* locationManager;
+@property (strong, nonatomic) NSDictionary* regionDictionary;
+@property (strong, nonatomic) CLCircularRegion* intrepidOfficeLocation;
 @end
 
 @implementation HomeViewController 
